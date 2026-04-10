@@ -12,6 +12,11 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
+    server: {
+      deps: {
+        external: [/^bun:/],
+      },
+    },
     environmentMatchGlobs: [["src/test/web/**", "jsdom"]],
     include: ["src/test/**/*.{test,spec}.{ts,tsx}"],
     exclude: ["src/test/e2e/**"],
