@@ -1,6 +1,9 @@
 # Open Household Medical App
 
 An open-source, macOS-first household medical organizer built with Bun, React, Hono, SQLite, and a local MCP server.
+Developed with 🤖 Codex/ChatGPT 5.4.
+
+Repository: https://github.com/ilyannn/medical-app
 
 ## What it includes
 
@@ -17,11 +20,17 @@ An open-source, macOS-first household medical organizer built with Bun, React, H
 ```bash
 bun install
 cp .env.example .env
+just setup-hooks
 just check
 just dev
 ```
 
 The demo config stores data in `./var/medical-app.sqlite` and uses `./demo/icloud-root` as the managed document root.
+
+Pre-push security check
+- `just scan-secrets` validates tracked files for common secret patterns.
+- `just setup-hooks` configures a local pre-push hook so `git push` runs `scan-secrets` automatically.
+- Use `git push --no-verify` only when explicitly needed to bypass the local pre-push check.
 
 Biome is the default TypeScript linter and formatter for this repo. `just lint` runs Biome checks, TypeScript typechecking, and SyntaQLite against the repo's SQLite DDL and tagged SQL statements. If `syntaqlite` is not already installed, the repo bootstraps a local Python 3.12 toolchain with `uv` under `.uv-python` and `.venv-sql`.
 
