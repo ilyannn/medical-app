@@ -49,12 +49,21 @@ run_syntaqlite fmt --check "drizzle/**/*.sql" "schema/**/*.sql"
 run_syntaqlite validate "drizzle/**/*.sql" "schema/**/*.sql"
 
 sql_host_files=()
-while IFS= read -r file; do
-  sql_host_files+=("$file")
-done < <(
-  cd "$ROOT_DIR" &&
-    rg -l 'sql`' src/server src/mcp --glob '*.ts'
-)
+if command -v rg >/dev/null 2>&1; then
+  while IFS= read -r file; do
+    sql_host_files+=("$file")
+  done < <(
+    cd "$ROOT_DIR" &&
+      rg -l 'sql`' src/server src/mcp --glob '*.ts'
+  )
+else
+  while IFS= read -r -d '' file; do
+    sql_host_files+=("$file")
+  done < <(
+    cd "$ROOT_DIR" &&
+      git grep -l -z --fixed-strings 'sql`' -- src/server src/mcp -- '*.ts'
+  )
+fi
 
 if [ "${#sql_host_files[@]}" -gt 0 ]; then
   (
