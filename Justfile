@@ -3,6 +3,12 @@ set shell := ["bash", "-uc"]
 default:
   @just --list
 
+install:
+  bun install
+  test -f .env || cp .env.example .env
+
+start: install dev
+
 dev:
   bunx concurrently -k -n web,api -c cyan,green "just dev-web" "just dev-server"
 
@@ -25,13 +31,29 @@ format:
 
 check: lint test
 
-lint: lint-ts lint-sql
+lint: lint-ts lint-sql lint-md lint-sh lint-yaml lint-actions
 
 lint-ts:
   bunx @biomejs/biome check . && bunx typescript --noEmit
 
 lint-sql:
   bash ./scripts/lint-sql.sh
+
+lint-md:
+  bunx markdownlint-cli2
+
+lint-sh:
+  bash ./scripts/lint-shell.sh
+
+lint-yaml:
+  bash ./scripts/lint-yaml.sh
+
+lint-actions:
+  bash ./scripts/lint-actions.sh
+
+lint-native:
+  swift format lint --recursive --strict native/macos-bridge/Sources
+  swift format lint --strict native/macos-bridge/Package.swift
 
 scan-secrets:
   bash ./scripts/scan-secrets.sh

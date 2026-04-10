@@ -30,9 +30,9 @@ if command -v rg >/dev/null 2>&1; then
     fi
   done <<<"$(printf '%s\n' "${PATTERNS[@]}")"
 elif command -v python3 >/dev/null 2>&1; then
+  patterns_blob="$(printf '%s\n' "${PATTERNS[@]}")"
   scan_output="$(
-    printf '%s\n' "${PATTERNS[@]}" |
-      python3 - "$ROOT_DIR" <<'PY'
+    PATTERNS_BLOB="$patterns_blob" python3 - "$ROOT_DIR" <<'PY'
 import os
 import re
 import subprocess
@@ -40,7 +40,11 @@ import sys
 
 
 root = sys.argv[1]
-patterns = [line.rstrip("\n") for line in sys.stdin if line.strip()]
+patterns = [
+    line.rstrip("\n")
+    for line in os.environ.get("PATTERNS_BLOB", "").splitlines()
+    if line.strip()
+]
 compiled_patterns = [re.compile(pattern) for pattern in patterns]
 
 files_blob = subprocess.check_output(["git", "-C", root, "ls-files", "-z"])

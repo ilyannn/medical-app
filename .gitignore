@@ -5,9 +5,11 @@ dist
 .env.local
 .env.test.local
 coverage
-.cache/uv
+.cache/
 .uv-python
 .venv-sql
+.venv-lint
+.tools
 playwright-report
 test-results
 var/*.sqlite
