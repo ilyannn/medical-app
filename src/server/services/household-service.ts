@@ -1,4 +1,3 @@
-import type { Database } from "bun:sqlite";
 import type { ICloudDocumentStore } from "@/server/adapters/document-store";
 import type { DraftService } from "@/server/adapters/draft-service";
 import type { MacOSBridge } from "@/server/adapters/macos-bridge";
@@ -19,6 +18,7 @@ import {
   reimbursementsTable,
   syncRunsTable,
 } from "@/server/db/schema";
+import type { SqliteDatabase } from "@/server/db/sqlite";
 import { querySearchIndex, rebuildSearchIndex } from "@/server/services/search";
 import { createId } from "@/server/utils/id";
 import type {
@@ -47,7 +47,7 @@ function matchesScope(personId: string, personScope: PersonScope) {
 export class HouseholdService {
   constructor(
     private readonly db: AppDb,
-    private readonly sqlite: Database,
+    private readonly sqlite: SqliteDatabase,
     private readonly config: AppConfig,
     private readonly documentStore: ICloudDocumentStore,
     private readonly paperless: PaperlessClient,
@@ -122,31 +122,20 @@ export class HouseholdService {
 
   async listDoctors(personScope: PersonScope): Promise<DoctorWithContact[]> {
     const doctors = await this.db
-      .select({
-        id: doctorsTable.id,
-        personId: doctorsTable.personId,
-        careAreaId: doctorsTable.careAreaId,
-        name: doctorsTable.name,
-        specialty: doctorsTable.specialty,
-        practiceName: doctorsTable.practiceName,
-        preferredChannel: doctorsTable.preferredChannel,
-        notes: doctorsTable.notes,
-        macosContactId: doctorsTable.macosContactId,
-        careAreaName: careAreasTable.name,
-      })
+      .select()
       .from(doctorsTable)
       .leftJoin(careAreasTable, eq(doctorsTable.careAreaId, careAreasTable.id))
       .orderBy(doctorsTable.name);
 
-    const filtered = doctors.filter((doctor) =>
-      matchesScope(doctor.personId, personScope),
+    const filtered = doctors.filter((row) =>
+      matchesScope(row.doctors.personId, personScope),
     );
     return Promise.all(
-      filtered.map(async (doctor) => ({
-        ...doctor,
-        careAreaName: doctor.careAreaName ?? "Unassigned",
-        contact: doctor.macosContactId
-          ? await this.macosBridge.getContactById(doctor.macosContactId)
+      filtered.map(async (row) => ({
+        ...row.doctors,
+        careAreaName: row.care_areas?.name ?? "Unassigned",
+        contact: row.doctors.macosContactId
+          ? await this.macosBridge.getContactById(row.doctors.macosContactId)
           : null,
       })),
     );

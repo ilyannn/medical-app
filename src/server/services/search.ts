@@ -1,5 +1,5 @@
-import type { Database } from "bun:sqlite";
 import { sql } from "@/server/db/sql";
+import type { SqliteDatabase } from "@/server/db/sqlite";
 import type { SearchHit } from "@/shared/types";
 
 interface SearchRecord {
@@ -11,10 +11,10 @@ interface SearchRecord {
 }
 
 export async function rebuildSearchIndex(
-  sqlite: Database,
+  sqlite: SqliteDatabase,
   records: SearchRecord[],
 ) {
-  sqlite.run(sql`DELETE FROM search_index;`);
+  sqlite.exec(sql`DELETE FROM search_index;`);
   const statement = sqlite.prepare(
     sql`
       INSERT INTO search_index (
@@ -42,7 +42,7 @@ export async function rebuildSearchIndex(
 }
 
 export function querySearchIndex(
-  sqlite: Database,
+  sqlite: SqliteDatabase,
   query: string,
   personScope: string,
 ): SearchHit[] {
