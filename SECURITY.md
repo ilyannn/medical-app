@@ -1,6 +1,7 @@
 # Security Policy
 
-This project is designed to be open source while remaining safe for public collaboration.
+This project is designed to be open source while remaining safe for
+public collaboration.
 
 ## Supported usage
 
@@ -9,7 +10,9 @@ This project is designed to be open source while remaining safe for public colla
 
 ## Reporting a vulnerability
 
-Please open a private security advisory or contact the maintainers directly if you discover a vulnerability that could expose user data, local filesystem access, or privileged bridge behavior.
+Please open a private security advisory or contact the maintainers
+directly if you discover a vulnerability that could expose user data,
+local filesystem access, or privileged bridge behavior.
 
 ## Sensitive areas
 
