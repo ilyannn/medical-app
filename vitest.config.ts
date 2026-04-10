@@ -26,7 +26,6 @@ export default defineConfig({
         },
       },
     },
-    environmentMatchGlobs: [["src/test/web/**", "jsdom"]],
     include: ["src/test/**/*.{test,spec}.{ts,tsx}"],
     exclude: ["src/test/e2e/**"],
     setupFiles: ["./src/test/setup.ts"],
