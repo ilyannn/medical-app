@@ -2,6 +2,8 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
+const bunDepMatcher = "bun:sqlite";
+
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
@@ -14,7 +16,14 @@ export default defineConfig({
     environment: "node",
     server: {
       deps: {
-        external: [/^bun:/],
+        external: [bunDepMatcher],
+      },
+    },
+    deps: {
+      optimizer: {
+        ssr: {
+          exclude: [bunDepMatcher],
+        },
       },
     },
     environmentMatchGlobs: [["src/test/web/**", "jsdom"]],
