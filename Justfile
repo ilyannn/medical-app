@@ -24,3 +24,9 @@ test-live:
 
 test-native:
   bun run test:native
+
+setup-hooks:
+  bash ./scripts/setup-git-hooks.sh
+
+scan-secrets:
+  bash ./scripts/scan-secrets.sh

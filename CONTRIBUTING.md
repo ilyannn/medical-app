@@ -5,6 +5,7 @@
 - Keep the repository public-safe. Do not commit personal medical data, iCloud paths, Paperless credentials, calendar IDs, or contact identifiers.
 - Use `just` commands for local work.
 - Keep feature work covered by tests. New API behavior should come with unit or integration tests, and UI changes that affect flows should update Playwright coverage where practical.
+- Keep `just setup-hooks` configured and fix any findings from `just scan-secrets` before pushing.
 
 ## Local workflow
 
