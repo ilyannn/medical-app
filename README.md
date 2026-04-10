@@ -5,6 +5,20 @@ Developed with 🤖 Codex/ChatGPT 5.4.
 
 Repository: https://github.com/ilyannn/medical-app
 
+## Screenshots
+
+### Home dashboard
+
+![Home dashboard](docs/screenshots/home-dashboard.png)
+
+### Unified admin workspace
+
+![Unified admin workspace](docs/screenshots/admin-workspace.png)
+
+### Documents and Paperless import
+
+![Documents and Paperless import](docs/screenshots/documents-import.png)
+
 ## What it includes
 
 - Shared household dashboard with `All`, `Me`, and `Wife` filters
@@ -39,6 +53,7 @@ Biome is the default TypeScript linter and formatter for this repo. `just lint` 
 - `just dev`: run the API and frontend
 - `just format`: run Biome formatting across the repo
 - `just lint`: run Biome linting, TypeScript typechecking, and SyntaQLite SQL linting
+- `just screenshots-readme`: regenerate the README screenshots from seeded demo data
 - `just test`: run unit, integration, and Playwright E2E tests
 - `just check`: run `just lint` and `just test`
 - `just test-live`: optional local live-integration coverage

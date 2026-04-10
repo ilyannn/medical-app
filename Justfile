@@ -36,6 +36,9 @@ lint-sql:
 scan-secrets:
   bash ./scripts/scan-secrets.sh
 
+screenshots-readme:
+  bun scripts/capture-readme-screenshots.mjs
+
 test: test-unit test-e2e
 
 test-unit:

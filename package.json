@@ -23,6 +23,7 @@
     "lint:ts": "just lint-ts",
     "lint:sql": "just lint-sql",
     "scan:secrets": "just scan-secrets",
+    "screenshots:readme": "bun scripts/capture-readme-screenshots.mjs",
     "test": "just test",
     "setup:hooks": "just setup-hooks",
     "test:unit": "just test-unit",
