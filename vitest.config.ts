@@ -22,6 +22,13 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
+    server: {
+      deps: {
+        // Inline drizzle-orm so Vite transforms it and the bun:sqlite alias
+        // (set on CI) also applies to drizzle-orm/bun-sqlite's internal import.
+        inline: [/drizzle-orm/],
+      },
+    },
     include: ["src/test/**/*.{test,spec}.{ts,tsx}"],
     exclude: ["src/test/e2e/**"],
     setupFiles: ["./src/test/setup.ts"],
